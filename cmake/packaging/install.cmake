@@ -7,7 +7,7 @@ set(PREM3DFILE ${MODEL3DDIR}/earth_binned_default.txt)
 
 configure_file(
   ${CMAKE_CURRENT_LIST_DIR}/prem_default.hpp.in
-  ${CMAKE_BINARY_DIR}/prem_default.hpp @ONLY USE_SOURCE_PERMISSIONS)
+  ${PROJECT_BINARY_DIR}/prem_default.hpp @ONLY USE_SOURCE_PERMISSIONS)
 
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/PremTables
         DESTINATION ${CMAKE_INSTALL_PREFIX})
