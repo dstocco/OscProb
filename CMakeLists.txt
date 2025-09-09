@@ -104,7 +104,6 @@ list(
   inc/PMNS_SNSI.h
   inc/PMNS_Sterile.h
   inc/PremModel.h
-  inc/complexsolver.h
   inc/Definitions.h
   ${CMAKE_BINARY_DIR}/prem_default.hpp)
 set_target_properties(OscProb PROPERTIES PUBLIC_HEADER "${PUB_HDRS}" OUTPUT_NAME
