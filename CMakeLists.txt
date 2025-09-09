@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.22.1)
 project(oscprob LANGUAGES CXX)
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
@@ -79,34 +79,36 @@ target_sources(
           src/PMNS_SNSI.cxx
           src/PMNS_Sterile.cxx
           src/PremModel.cxx
-          src/complexsolver.cxx
-  PUBLIC FILE_SET
-         HEADERS
-         BASE_DIRS
-         inc
-         ${CMAKE_BINARY_DIR}
-         FILES
-         inc/Absorption.h
-         inc/EarthModelBase.h
-         inc/EarthModelBinned.h
-         inc/EigenPoint.h
-         inc/NuPath.h
-         inc/PMNS_Base.h
-         inc/PMNS_Decay.h
-         inc/PMNS_Deco.h
-         inc/PMNS_DensityMatrix.h
-         inc/PMNS_Fast.h
-         inc/PMNS_Iter.h
-         inc/PMNS_LIV.h
-         inc/PMNS_NSI.h
-         inc/PMNS_NUNM.h
-         inc/PMNS_OQS.h
-         inc/PMNS_SNSI.h
-         inc/PMNS_Sterile.h
-         inc/PremModel.h
-         inc/complexsolver.h
-         inc/Definitions.h
-         ${CMAKE_BINARY_DIR}/prem_default.hpp)
+          src/complexsolver.cxx)
+target_include_directories(
+  OscProb PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/inc>
+                 $<INSTALL_INTERFACE:include>)
+list(
+  APPEND
+  PUB_HDRS
+  inc/Absorption.h
+  inc/EarthModelBase.h
+  inc/EarthModelBinned.h
+  inc/EigenPoint.h
+  inc/NuPath.h
+  inc/PMNS_Base.h
+  inc/PMNS_Decay.h
+  inc/PMNS_Deco.h
+  inc/PMNS_DensityMatrix.h
+  inc/PMNS_Fast.h
+  inc/PMNS_Iter.h
+  inc/PMNS_LIV.h
+  inc/PMNS_NSI.h
+  inc/PMNS_NUNM.h
+  inc/PMNS_OQS.h
+  inc/PMNS_SNSI.h
+  inc/PMNS_Sterile.h
+  inc/PremModel.h
+  inc/complexsolver.h
+  inc/Definitions.h
+  ${CMAKE_BINARY_DIR}/prem_default.hpp)
+set_target_properties(OscProb PROPERTIES PUBLIC_HEADER "${PUB_HDRS}" OUTPUT_NAME
+                                                                     OscProb)
 
 # Link libraries
 target_link_libraries(
@@ -114,17 +116,14 @@ target_link_libraries(
   PRIVATE MatrixDecomp
   PUBLIC ROOT::RIO Eigen3::Eigen)
 
-set_target_properties(OscProb PROPERTIES OUTPUT_NAME OscProb)
-get_target_property(hdrs OscProb HEADER_SET)
-message(STATUS "Hdrs: ${hdrs}")
-add_root_dictionary(OscProb HEADERS ${hdrs} LINKDEF inc/LinkDef.h)
+add_root_dictionary(OscProb HEADERS ${PUB_HDRS} LINKDEF inc/LinkDef.h)
+
+add_subdirectory(MatrixDecomp)
 
 install(
   TARGETS OscProb
   EXPORT oscprob
-  FILE_SET HEADERS
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
-add_subdirectory(MatrixDecomp)
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 include(cmake/packaging/CMakeLists.txt)
