@@ -81,8 +81,9 @@ target_sources(
           src/PremModel.cxx
           src/complexsolver.cxx)
 target_include_directories(
-  OscProb PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/inc>
-                 $<INSTALL_INTERFACE:include>)
+  OscProb
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/inc>
+         $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}> $<INSTALL_INTERFACE:include>)
 list(
   APPEND
   PUB_HDRS
