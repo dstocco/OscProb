@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.22.1)
 project(oscprob LANGUAGES CXX)
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+option(OSCPROB_ENABLE_TESTING "Enable OscProb tests" OFF)
 
 include(GNUInstallDirs)
 
@@ -46,6 +47,8 @@ endif()
 
 set(CMAKE_INSTALL_RPATH ${basePoint} ${basePoint}/${relDir}
                         ${basePoint}/../../lib)
+
+# include(CTest)
 
 include(dependencies.cmake)
 
@@ -120,6 +123,17 @@ add_root_dictionary(OscProb HEADERS ${PUB_HDRS} LINKDEF inc/LinkDef.h)
 
 add_subdirectory(MatrixDecomp)
 
+if(OSCPROB_ENABLE_TESTING)
+  add_subdirectory(test)
+  # file(CREATE_LINK ${PROJECT_SOURCE_DIR}/inc ${PROJECT_BINARY_DIR}/inc
+  # SYMBOLIC) file(CREATE_LINK ${PROJECT_SOURCE_DIR}/PremTables
+  # ${PROJECT_BINARY_DIR}/stage/PremTables SYMBOLIC) file(CREATE_LINK
+  # ${PROJECT_SOURCE_DIR}/EarthTables ${PROJECT_BINARY_DIR}/stage/EarthTables
+  # SYMBOLIC) file(COPY ${PROJECT_SOURCE_DIR}/tutorial DESTINATION
+  # ${PROJECT_BINARY_DIR}/stage/)
+  install(DIRECTORY tutorial DESTINATION ${CMAKE_INSTALL_PREFIX})
+endif()
+
 install(
   TARGETS OscProb
   EXPORT oscprob
@@ -127,3 +141,9 @@ install(
   PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 include(cmake/packaging/CMakeLists.txt)
+
+if(NOT PROJECT_IS_TOP_LEVEL)
+  # do not show those options in the basic options as they are probably of
+  # little interest for project including us
+  mark_as_advanced(OSCPROB_ENABLE_TESTING)
+endif()
