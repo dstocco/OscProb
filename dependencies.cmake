@@ -13,10 +13,7 @@ if(NOT TARGET Eigen3::Eigen)
   set(EIGEN_BUILD_DOC OFF)
   FetchContent_Declare(
     Eigen3
-    GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-    GIT_TAG 3147391d946bb4b6c68edd901f2add6ac1f31f8c
-    GIT_SHALLOW TRUE
-    GIT_PROGRESS TRUE
-    EXCLUDE_FROM_ALL)
+    URL https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz
+        EXCLUDE_FROM_ALL)
   FetchContent_MakeAvailable(Eigen3)
 endif()
