@@ -33,17 +33,11 @@ jobs:
         # Build your program with the given configuration
         run: cmake --build ${{github.workspace}}/build --target install
 
-      - name: List
-        # Build your program with the given configuration
-        run: ls ${{github.workspace}}/install/test
-
       - name: TestMethods
-        working-directory: ${{github.workspace}}/install/test
-        run: root -b -q ../tutorial/LoadOscProb.C TestMethods.C
+        run: cd ${{github.workspace}}/install/test && root -b -q ../tutorial/LoadOscProb.C TestMethods.C
 
       - name: TestStress
-        working-directory: ${{github.workspace}}/install/test
-        run: root -b -q ../tutorial/LoadOscProb.C StressTest.C
+        run: cd ${{github.workspace}}/install/test && root -b -q ../tutorial/LoadOscProb.C StressTest.C
 
       # - name: Test
       #   working-directory: ${{github.workspace}}/build
