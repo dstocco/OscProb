@@ -6,7 +6,10 @@
 *_C.d
 *_C.so
 
-# Ignore compilated macros
+build
+install
+
+# Ignore compiled macros
 *.d
 AutoDict*
 
