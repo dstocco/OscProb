@@ -33,6 +33,10 @@ jobs:
         # Build your program with the given configuration
         run: cmake --build ${{github.workspace}}/build --target install
 
+      - name: List
+        # Build your program with the given configuration
+        run: ls ${{github.workspace}}/install/test
+
       - name: TestMethods
         working-directory: ${{github.workspace}}/install/test
         run: root -b -q ../tutorial/LoadOscProb.C TestMethods.C
